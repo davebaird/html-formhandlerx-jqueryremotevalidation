@@ -236,9 +236,15 @@ form, for example:
 
 =head1 See also
 
-L<http://www.catalystframework.org/calendar/2012/23>
-L<http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html>
-L<http://jqueryvalidation.org>
+=over 4
+
+=item L<http://www.catalystframework.org/calendar/2012/23>
+
+=item L<http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html>
+
+=item L<http://jqueryvalidation.org>
+
+=back
 
 =cut
 

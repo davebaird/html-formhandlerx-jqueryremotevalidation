@@ -115,9 +115,9 @@ form, for example:
 
 # See also
 
-[http://www.catalystframework.org/calendar/2012/23](http://www.catalystframework.org/calendar/2012/23)
-[http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html](http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html)
-[http://jqueryvalidation.org](http://jqueryvalidation.org)
+- [http://www.catalystframework.org/calendar/2012/23](http://www.catalystframework.org/calendar/2012/23)
+- [http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html](http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html)
+- [http://jqueryvalidation.org](http://jqueryvalidation.org)
 
 # AUTHOR
 
