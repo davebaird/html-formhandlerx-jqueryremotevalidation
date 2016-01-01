@@ -236,19 +236,19 @@ form, for example:
 
 =head1 See also
 
-    - L<http://www.catalystframework.org/calendar/2012/23>
-    - L<http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html>
-    - L<http://jqueryvalidation.org>
+L<http://www.catalystframework.org/calendar/2012/23>
+L<http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html>
+L<http://jqueryvalidation.org>
 
 =cut
 
 =head1 AUTHOR
 
-David R. Baird, C<< <dave at zerofive.co.uk > >>
+David R. Baird, C<< <dave at zerofive.co.uk> >>
 
 =head1 CODE REPOSITORY
 
-L<github.com/davebaird/html-formhandlerx-jqueryremotevalidator>
+L<http://github.com/davebaird/html-formhandlerx-jqueryremotevalidator>
 
 Please report any bugs or feature requests there.
 

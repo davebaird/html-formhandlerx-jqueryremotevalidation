@@ -115,17 +115,17 @@ form, for example:
 
 # See also
 
-    - L<http://www.catalystframework.org/calendar/2012/23>
-    - L<http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html>
-    - L<http://jqueryvalidation.org>
+[http://www.catalystframework.org/calendar/2012/23](http://www.catalystframework.org/calendar/2012/23)
+[http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html](http://alittlecode.com/wp-content/uploads/jQuery-Validate-Demo/index.html)
+[http://jqueryvalidation.org](http://jqueryvalidation.org)
 
 # AUTHOR
 
-David R. Baird, `<dave at zerofive.co.uk >`
+David R. Baird, `<dave at zerofive.co.uk>`
 
 # CODE REPOSITORY
 
-["davebaird/html-formhandlerx-jqueryremotevalidator" in github.com](https://metacpan.org/pod/github.com#davebaird-html-formhandlerx-jqueryremotevalidator)
+[http://github.com/davebaird/html-formhandlerx-jqueryremotevalidator](http://github.com/davebaird/html-formhandlerx-jqueryremotevalidator)
 
 Please report any bugs or feature requests there.
 
