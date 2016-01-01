@@ -72,9 +72,10 @@ method _js_code_for_validation_scripts () {
                         ->encode($spec_data)
                          || '';
 
-    $spec =~ s/"data_collector"/data_collector/g;
+    my $form_name = $self->name;
+    $spec =~ s/"${form_name}_data_collector"/${form_name}_data_collector/g;
     $spec =~ s/\n$//;
-    $spec = "\n  var validation_spec = $spec;\n";
+    $spec = "\n  var ${form_name}_validation_spec = $spec;\n";
     return $self->_data_collector_script . $spec . $self->_run_validator_script;
 }
 
@@ -93,7 +94,7 @@ method _build_remote_rule ($field) {
     my $remote_rule = {
         url => sprintf("%s/%s/%s", $self->validation_endpoint, $self->name, $field->name),
         type => 'POST',
-        data => 'data_collector',
+        data => $self->name . "_data_collector",
         };
 
     return $remote_rule;
@@ -107,7 +108,8 @@ method _data_collector_script () {
                     $self->fields
                     );
 
-    return "  var data_collector = {\n" . $script . "\n  };\n";
+    my $form_name = $self->name;
+    return "  var ${form_name}_data_collector = {\n" . $script . "\n  };\n";
 }
 
 method _skip_remote_validation ($field) {
@@ -128,10 +130,10 @@ method _run_validator_script () {
 
   \$(document).ready(function() {
     \$.getScript("$link", function () {
-      if (typeof validation_spec !== 'undefined') {
+      if (typeof ${form_name}_validation_spec !== 'undefined') {
         \$('form#$form_name').validate({
-          rules: validation_spec.rules,
-          messages: validation_spec.messages,
+          rules: ${form_name}_validation_spec.rules,
+          messages: ${form_name}_validation_spec.messages,
           highlight: function(element) {
             \$(element).closest('.$css_target').removeClass('success').addClass('error');
           },
