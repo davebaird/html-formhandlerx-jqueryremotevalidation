@@ -248,7 +248,7 @@ David R. Baird, C<< <dave at zerofive.co.uk > >>
 
 =head1 CODE REPOSITORY
 
-L<github.com/dvz5/html-formhandlerx-jqueryremotevalidator>
+L<github.com/davebaird/html-formhandlerx-jqueryremotevalidator>
 
 Please report any bugs or feature requests there.
 

@@ -38,7 +38,7 @@ perldoc command.
 You can also look for information at:
 
     Github (report bugs here)
-        github.com/dvz5/html-formhandlerx-jqueryremotevalidator
+        github.com/davebaird/html-formhandlerx-jqueryremotevalidator
 
     AnnoCPAN, Annotated CPAN documentation
         http://annocpan.org/dist/HTML-FormHandlerX-JQueryRemoteValidator
