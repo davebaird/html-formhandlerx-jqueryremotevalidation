@@ -62,27 +62,26 @@ has skip_all_remote_validation => (is => 'rw', isa => 'Bool', default => 0);
 
 has element_target_class => (is => 'ro', isa => 'Str', default => 'form-group');
 
-# $self is the field
 method _js_code_for_validation_scripts () {
-    my $spec_data = $self->form->_data_for_validation_spec;
+    my $spec_data = $self->_data_for_validation_spec;
     my $spec = JSON->new->utf8
                         ->allow_nonref
                         ->pretty(1)
-                        ->relaxed(undef)
-                        ->canonical(undef)
+                #        ->relaxed(undef)
+                #        ->canonical(undef)
                         ->encode($spec_data)
                          || '';
 
     $spec =~ s/"data_collector"/data_collector/g;
     $spec =~ s/\n$//;
     $spec = "\n  var validation_spec = $spec;\n";
-    return $self->_data_collector_script . $spec . $self->form->_run_validator_script;
+    return $self->_data_collector_script . $spec . $self->_run_validator_script;
 }
 
 method _data_for_validation_spec () {
     my $js_profile = { rules => {}, messages => {} };
 
-    foreach my $field ( @{$self->fields}) {
+    foreach my $field (@{$self->fields}) {
         next if $self->_skip_remote_validation($field);       # don't build rules for these fields
         $js_profile->{rules}->{$field->id}->{remote} = $self->_build_remote_rule($field);
     }
@@ -104,6 +103,7 @@ method _data_collector_script () {
     my $script = join(",\n", 
                     map { sprintf "    \"%s.%s\": function () { return \$(\"#%s\\\\.%s\").val() }", $self->name, $_->name, $self->name, $_->name }
                     grep { ! $self->_skip_remote_validation($_) }
+                    sort {$a->name cmp $b->name} # the sort is there to keep output consistent for test scripts
                     $self->fields
                     );
 
