@@ -16,27 +16,27 @@ my $test_spec = {
    'password' => {
        'remote' => {
          'url' => '/ajax/formvalidator/TestForm/password',
-         'data' => 'data_collector',
+         'data' => 'TestForm_data_collector',
          'type' => 'POST'
        }
      },
    'password2' => {
         'remote' => {
           'type' => 'POST',
-          'data' => 'data_collector',
+          'data' => 'TestForm_data_collector',
           'url' => '/ajax/formvalidator/TestForm/password2'
         }
       },
    'lname' => {
     'remote' => {
       'type' => 'POST',
-      'data' => 'data_collector',
+      'data' => 'TestForm_data_collector',
       'url' => '/ajax/formvalidator/TestForm/lname'
     }
   },
    'fname' => {
     'remote' => {
-      'data' => 'data_collector',
+      'data' => 'TestForm_data_collector',
       'url' => '/ajax/formvalidator/TestForm/fname',
       'type' => 'POST'
     }
@@ -45,7 +45,7 @@ my $test_spec = {
     'remote' => {
       'type' => 'POST',
       'url' => '/ajax/formvalidator/TestForm/email',
-      'data' => 'data_collector'
+      'data' => 'TestForm_data_collector'
     }
   }
      },
@@ -53,7 +53,7 @@ my $test_spec = {
 };
 
 my $test_js1 = 
-q[  var data_collector = {
+q[  var TestForm_data_collector = {
     "TestForm.email": function () { return $("#TestForm\\\\.email").val() },
     "TestForm.fname": function () { return $("#TestForm\\\\.fname").val() },
     "TestForm.lname": function () { return $("#TestForm\\\\.lname").val() },
@@ -64,10 +64,10 @@ q[  var data_collector = {
 my $test_js2 = 
 q[  $(document).ready(function() {
     $.getScript("http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js", function () {
-      if (typeof validation_spec !== 'undefined') {
+      if (typeof TestForm_validation_spec !== 'undefined') {
         $('form#TestForm').validate({
-          rules: validation_spec.rules,
-          messages: validation_spec.messages,
+          rules: TestForm_validation_spec.rules,
+          messages: TestForm_validation_spec.messages,
           highlight: function(element) {
             $(element).closest('.form-group').removeClass('success').addClass('error');
           },

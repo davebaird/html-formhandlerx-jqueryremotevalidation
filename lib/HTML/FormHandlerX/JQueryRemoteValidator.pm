@@ -6,13 +6,11 @@ use JSON ();
 
 =head1 NAME
 
-HTML::FormHandlerX::JQueryRemoteValidator
-
-Call server-side validation code asynchronously from client-side forms.
+HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asynchronously from client-side forms.
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
