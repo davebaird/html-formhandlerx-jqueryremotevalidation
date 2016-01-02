@@ -1,12 +1,10 @@
 # NAME
 
-HTML::FormHandlerX::JQueryRemoteValidator
-
-Call server-side validation code asynchronously from client-side forms.
+HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asynchronously from client-side forms.
 
 # VERSION
 
-Version 0.01
+Version 0.03
 
 # SYNOPSIS
 
@@ -26,8 +24,7 @@ Version 0.01
         my ($form_name, $field_name) = split '/', $m->path_info;
 
         my $form = $.form($form_name);
-        $form->no_update;                          # important!
-        $form->process(params => $.args);
+        $form->process(params => $.args, no_update => 1);
 
         my $err = join ' ', @{$form->field($field_name)->errors};
         my $result = $err || 'true';

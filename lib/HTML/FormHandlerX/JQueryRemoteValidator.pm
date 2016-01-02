@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.02
+Version 0.03
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 =head1 SYNOPSIS
@@ -35,8 +35,7 @@ our $VERSION = '0.02';
         my ($form_name, $field_name) = split '/', $m->path_info;
 
         my $form = $.form($form_name);
-        $form->no_update;                          # important!
-        $form->process(params => $.args);
+        $form->process(params => $.args, no_update => 1);
 
         my $err = join ' ', @{$form->field($field_name)->errors};
         my $result = $err || 'true';

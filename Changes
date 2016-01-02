@@ -1,5 +1,8 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.03    2016-10-02 23:25
+        no_update is a flag, not a method
+
 0.02    2016-01-01 15:30
         Fixed identifiers to work with multiple forms on the page.
 
