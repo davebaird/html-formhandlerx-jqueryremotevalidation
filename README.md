@@ -4,7 +4,7 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 # VERSION
 
-Version 0.03
+Version 0.04
 
 # SYNOPSIS
 
@@ -53,10 +53,6 @@ the error. The message will be displayed on the form.
 
 The synopsis has an example in Poet/Mason. 
 
-## jQuery
-
-You need to load the jQuery library yourself. See https://jquery.com/download/ 
-
 ## `jquery_validator_link`
 
 Default: http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js
@@ -64,13 +60,29 @@ Default: http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.m
 You can leave this as-is, or if you prefer, you can put the file on your own
 server and modify this setting to point to it.
 
-## `element_target_class`
+## `js_apply_error_classes`
 
-Default: form-group
+Default: 
 
-This identifies the CSS class of the elements that will receive the validation
-success/error messages. The default (`form-group`) is for forms styled using
-Bootstrap 3.
+    function(element) { 
+        \$(element).closest('.form-group').removeClass('success').addClass('error'); 
+    }
+
+JavaScript function called when a field fails validation. The function is passed
+the form-control element that failed. 
+
+## `js_apply_success_classes`
+
+Default: 
+
+    function(element) {
+        element
+        .text('dummy').addClass('valid')
+        .closest('.form-group').removeClass('error').addClass('success');
+    }
+
+JavaScript function called when a field passes validation. The function is passed
+the form-control element that succeeded. 
 
 ## `skip_remote_validation_types`
 
@@ -89,6 +101,10 @@ A list of field names that should not be included in the validation calls.
 Boolean, default 0.
 
 A flag to turn off remote validation altogether, perhaps useful during form development.
+
+## jQuery
+
+You need to load the jQuery library yourself. See https://jquery.com/download/ 
 
 ## CSS
 

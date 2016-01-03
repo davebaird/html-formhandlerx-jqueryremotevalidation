@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 =head1 SYNOPSIS
@@ -56,8 +56,6 @@ has skip_remote_validation_fields => (is => 'rw', isa => 'ArrayRef', default => 
 has skip_remote_validation_types  => (is => 'rw', isa => 'ArrayRef', default => sub { [ qw(Hidden noCAPTCHA Display JSON JavaScript) ] });
 
 has skip_all_remote_validation => (is => 'rw', isa => 'Bool', default => 0);
-
-has element_target_class => (is => 'ro', isa => 'Str', default => 'form-group');
 
 method _js_code_for_validation_scripts () {
     my $spec_data = $self->_data_for_validation_spec;
@@ -121,7 +119,10 @@ method _skip_remote_validation ($field) {
 method _run_validator_script () {
     my $form_name = $self->name;
     my $link = $self->jquery_validator_link;
-    my $css_target = $self->element_target_class;
+    my $js_apply_error_classes = $self->js_apply_error_classes;
+    my $js_apply_success_classes = $self->js_apply_success_classes;
+    chomp($js_apply_error_classes);
+    chomp($js_apply_success_classes);
 
     my $script = <<SCRIPT;
 
@@ -131,14 +132,8 @@ method _run_validator_script () {
         \$('form#$form_name').validate({
           rules: ${form_name}_validation_spec.rules,
           messages: ${form_name}_validation_spec.messages,
-          highlight: function(element) {
-            \$(element).closest('.$css_target').removeClass('success').addClass('error');
-          },
-          success: function(element) {
-            element
-            .text('dummy').addClass('valid')
-            .closest('.$css_target').removeClass('error').addClass('success');
-          }
+          highlight: $js_apply_error_classes,
+          success: $js_apply_success_classes
         });
       }
     });
@@ -148,6 +143,19 @@ SCRIPT
     return $script;
 }
 
+has 'js_apply_error_classes' => (is => 'rw', isa => 'Str', default => <<JS);
+function(element) {
+            \$(element).closest('.form-group').removeClass('success').addClass('error');
+          }
+JS
+
+has 'js_apply_success_classes' => (is => 'rw', isa => 'Str', default => <<JS);
+function(element) {
+            element
+            .text('dummy').addClass('valid')
+            .closest('.form-group').removeClass('error').addClass('success');
+          }
+JS
 
 =head1 CONFIGURATION AND SETUP
 
@@ -170,10 +178,6 @@ the error. The message will be displayed on the form.
 
 The synopsis has an example in Poet/Mason. 
 
-=head2 jQuery
-
-You need to load the jQuery library yourself. See https://jquery.com/download/ 
-
 =head2 C<jquery_validator_link>
 
 Default: http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js
@@ -181,13 +185,29 @@ Default: http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.m
 You can leave this as-is, or if you prefer, you can put the file on your own
 server and modify this setting to point to it.
 
-=head2 C<element_target_class>
+=head2 C<js_apply_error_classes>
 
-Default: form-group
+Default: 
 
-This identifies the CSS class of the elements that will receive the validation
-success/error messages. The default (C<form-group>) is for forms styled using
-Bootstrap 3.
+    function(element) { 
+        \$(element).closest('.form-group').removeClass('success').addClass('error'); 
+    }
+
+JavaScript function called when a field fails validation. The function is passed
+the form-control element that failed. 
+
+=head2 C<js_apply_success_classes>
+
+Default: 
+
+    function(element) {
+        element
+        .text('dummy').addClass('valid')
+        .closest('.form-group').removeClass('error').addClass('success');
+    }
+
+JavaScript function called when a field passes validation. The function is passed
+the form-control element that succeeded. 
 
 =head2 C<skip_remote_validation_types>
 
@@ -207,6 +227,10 @@ Boolean, default 0.
 
 A flag to turn off remote validation altogether, perhaps useful during form development.
 
+
+=head2 jQuery
+
+You need to load the jQuery library yourself. See https://jquery.com/download/ 
 
 =head2 CSS
 

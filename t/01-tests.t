@@ -87,6 +87,9 @@ my $spec = $form->_data_for_validation_spec;
 my $js = $form->_js_code_for_validation_scripts;
 my $html = $form->render;
 
+#use Text::Diff;
+#warn diff \$test_js2, \$js;
+
 is_deeply($spec, $test_spec);
 
 contains_string($js, $test_js1, 'javascript data_collector generated OK');
