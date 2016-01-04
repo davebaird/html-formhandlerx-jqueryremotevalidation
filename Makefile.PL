@@ -16,10 +16,14 @@ WriteMakefile(
     },
     BUILD_REQUIRES => {
         'Test::More' => 0,
+        'Test::LongString' => 0,
     },
     PREREQ_PM => {
         #'ABC'              => 1.6,
         #'Foo::Bar::Module' => 5.0401,
+        'HTML::FormHandler::Moose::Role' => 0,
+        'Method::Signatures::Simple' => 0,
+        JSON => 0,
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'HTML-FormHandlerX-JQueryRemoteValidator-*' },

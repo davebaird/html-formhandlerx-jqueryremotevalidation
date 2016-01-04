@@ -14,10 +14,15 @@ my $builder = Module::Build->new(
     },
     build_requires => {
         'Test::More' => 0,
+        'Test::LongString' => 0,
     },
     requires => {
         #'ABC'              => 1.6,
         #'Foo::Bar::Module' => 5.0401,
+        'HTML::FormHandler::Moose::Role' => 0,
+        'Method::Signatures::Simple' => 0,
+        JSON => 0,
+        
     },
     add_to_cleanup     => [ 'HTML-FormHandlerX-JQueryRemoteValidator-*' ],
     create_makefile_pl => 'traditional',
