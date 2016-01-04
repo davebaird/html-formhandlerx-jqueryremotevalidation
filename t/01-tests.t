@@ -75,7 +75,8 @@ q[  $(document).ready(function() {
             element
             .text('dummy').addClass('valid')
             .closest('.form-group').removeClass('error').addClass('success');
-          }
+          },
+          submitHandler: function(form) { form.submit(); }
         });
       }
     });

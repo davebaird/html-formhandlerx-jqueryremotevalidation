@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 =head1 SYNOPSIS
@@ -133,7 +133,8 @@ method _run_validator_script () {
           rules: ${form_name}_validation_spec.rules,
           messages: ${form_name}_validation_spec.messages,
           highlight: $js_apply_error_classes,
-          success: $js_apply_success_classes
+          success: $js_apply_success_classes,
+          submitHandler: function(form) { form.submit(); }
         });
       }
     });

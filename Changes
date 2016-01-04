@@ -1,5 +1,9 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.05    2016-01-04 09:15
+        Fixed js to work with multiple buttons on a form, see 
+        https://github.com/jzaefferer/jquery-validation/issues/1559#issuecomment-168607367
+
 0.04    2016-01-04 00:05
         Added 'js_apply_error_classes' and 'js_apply_success_classes' 
         attributes.
