@@ -1,5 +1,9 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.10    2016-01-09 01:30
+        Much more flexible option for providing JavaScript fragments to JQV, 
+        and better docs explaining how to get a decent system up and running.
+
 0.06    2016-01-04 14:40
         Added dependencies to build scripts.
 
