@@ -11,6 +11,8 @@ with 'HTML::FormHandlerX::JQueryRemoteValidator';
  
 has '+name' => ( default => 'TestForm' );
 
+has_field 'id' => (type => 'Hidden');
+
 has_field 'fname' => (
     type => 'Text', 
     label => 'First name', 

@@ -56,6 +56,7 @@ my $test_js1 =
 q[  var TestForm_data_collector = {
     "TestForm.email": function () { return $("#TestForm\\\\.email").val() },
     "TestForm.fname": function () { return $("#TestForm\\\\.fname").val() },
+    "TestForm.id": function () { return $("#TestForm\\\\.id").val() },
     "TestForm.lname": function () { return $("#TestForm\\\\.lname").val() },
     "TestForm.password": function () { return $("#TestForm\\\\.password").val() },
     "TestForm.password2": function () { return $("#TestForm\\\\.password2").val() }
@@ -81,6 +82,7 @@ my $html = $form->render;
 
 #use Text::Diff;
 #warn diff \$test_js2, \$js;
+#warn $html;
 
 is_deeply($spec, $test_spec);
 

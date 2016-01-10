@@ -4,7 +4,7 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 # VERSION
 
-Version 0.10
+Version 0.12
 
 # SYNOPSIS
 
@@ -21,8 +21,6 @@ Version 0.10
     route ':form_name/:field_name';
 
     method handle () {
-        $m->res->content_type('application/json');
-
         my $form = $.form($.form_name);
         $form->process(params => $.args, no_update => 1);
 

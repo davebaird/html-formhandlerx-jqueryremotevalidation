@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.10
+Version 0.12
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.12';
 
 
 =head1 SYNOPSIS
@@ -96,7 +96,7 @@ method _build_remote_rule ($field) {
 method _data_collector_script () {
     my $script = join(",\n", 
                     map { sprintf "    \"%s.%s\": function () { return \$(\"#%s\\\\.%s\").val() }", $self->name, $_->name, $self->name, $_->name }
-                    grep { ! $self->_skip_remote_validation($_) }
+                    grep { ! $self->_skip_data_collection($_) }
                     sort {$a->name cmp $b->name} # the sort is there to keep output consistent for test scripts
                     $self->fields
                     );
@@ -112,6 +112,11 @@ method _skip_remote_validation ($field) {
     return 1 if $skip_field{$field->name};
     return 1 if $skip_type{$field->type};
     return 0;
+}
+
+method _skip_data_collection ($field) {
+    return 0 if $field->type eq 'Hidden';
+    return $self->_skip_remote_validation($field);
 }
 
 method _run_validator_script () {
