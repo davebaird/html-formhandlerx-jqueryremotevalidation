@@ -32,8 +32,6 @@ our $VERSION = '0.10';
     route ':form_name/:field_name';
 
     method handle () {
-        $m->res->content_type('application/json');
-
         my $form = $.form($.form_name);
         $form->process(params => $.args, no_update => 1);
 
@@ -123,14 +121,15 @@ method _run_validator_script () {
     my $opts = join ",\n          ", 
                     map { sprintf "%s: %s", $_, $self->jquery_validator_opts->{$_} }
                     keys %{$self->jquery_validator_opts};
+                    
+    $opts .= "\n$opts," if $opts;
 
     my $script = <<SCRIPT;
 
   \$(document).ready(function() {
     \$.getScript("$link", function () {
       if (typeof ${form_name}_validation_spec !== 'undefined') {
-        \$('form#$form_name').validate({
-          $opts,
+        \$('form#$form_name').validate({$opts
           rules: ${form_name}_validation_spec.rules,
           submitHandler: function(form) { form.submit(); }
         });

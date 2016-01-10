@@ -67,15 +67,6 @@ q[  $(document).ready(function() {
       if (typeof TestForm_validation_spec !== 'undefined') {
         $('form#TestForm').validate({
           rules: TestForm_validation_spec.rules,
-          messages: TestForm_validation_spec.messages,
-          highlight: function(element) {
-            $(element).closest('.form-group').removeClass('success').addClass('error');
-          },
-          success: function(element) {
-            element
-            .text('dummy').addClass('valid')
-            .closest('.form-group').removeClass('error').addClass('success');
-          },
           submitHandler: function(form) { form.submit(); }
         });
       }
