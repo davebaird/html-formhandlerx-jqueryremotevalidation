@@ -1,5 +1,8 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.121   2016-01-10 17:30
+        Fixed typo.
+
 0.12    2016-01-10 16:30
         Fixed handling of hidden fields - collect their data but don't 
         validate

@@ -4,7 +4,7 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 # VERSION
 
-Version 0.12
+Version 0.121
 
 # SYNOPSIS
 

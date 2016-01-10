@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.12
+Version 0.121
 
 =cut
 
-our $VERSION = '0.12';
+our $VERSION = '0.121';
 
 
 =head1 SYNOPSIS
@@ -127,7 +127,7 @@ method _run_validator_script () {
                     map { sprintf "%s: %s", $_, $self->jquery_validator_opts->{$_} }
                     keys %{$self->jquery_validator_opts};
                     
-    $opts .= "\n$opts," if $opts;
+    $opts = "\n$opts," if $opts;
 
     my $script = <<SCRIPT;
 
