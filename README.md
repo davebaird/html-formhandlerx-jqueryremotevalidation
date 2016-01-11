@@ -4,7 +4,7 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 # VERSION
 
-Version 0.2
+Version 0.21
 
 # SYNOPSIS
 
@@ -32,18 +32,17 @@ Version 0.2
 
 # CONFIGURATION AND SETUP
 
-The purpose of this package is to automatically build a set of JQuery scripts
-and inject them into your forms. The scripts send user input to your server
-where you must provide an endpoint that can validate the fields. Since you
-already have an HTML::FormHandler form, you can use that. The synopsis has a
-straightforward example of how to do it. 
+The purpose of this package is to build a set of JQuery scripts and inject them
+into your forms. The scripts send user input to your server where you must
+provide an endpoint that can validate the fields. Since you already have an
+HTML::FormHandler form, you can use that.
 
 The package uses the remote validation feature of the JQuery Validator
 framework. This also takes care of updating your form to notify the user of
-errors and successes while they fill in the form, but you will most likely want
+errors and successes while they fill in the form. You will most likely want
 to customise that behaviour for your own situation. An example is given below.
 
-## What you need
+## What you will need
 
 - JQuery
 
@@ -99,9 +98,9 @@ JQuery validator targets error messages to the second &lt;label> on each
 form-control. This is the default behaviour but can be changed. 
 
 The default setup will display and remove messages as the user progresses
-through the form, but for a better user experience JQuery Validator offers lots
-of options. You can read about them at [http://jqueryvalidation.org/validate/](http://jqueryvalidation.org/validate/).
-You should start by reading the few sentences at the very bottom of that page.
+through the form. JQuery Validator offers lots of options. You can read about
+them at [http://jqueryvalidation.org/validate/](http://jqueryvalidation.org/validate/). You should start by reading
+the few sentences at the very bottom of that page.
 
 Some useful additional styling to get started:
 
@@ -179,7 +178,7 @@ etc. as described there.
 
 ### `skip_remote_validation_types`
 
-Default: `[ qw(Hidden noCAPTCHA Display JSON JavaScript) ]`
+Default: `[ qw(Submit Hidden noCAPTCHA Display JSON JavaScript) ]`
 
 A list of field types that should not be included in the validation calls.
 

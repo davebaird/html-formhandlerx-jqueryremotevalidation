@@ -1,5 +1,8 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.21    2016-01-11 08:15
+        Doc tweaks.
+
 0.2     2016-01-11 07:45
         Now validating repeatable fields. TODO: compound fields.
         Removed 'skip_remote_validation_fields' attribute and using 'no_remote_validate' 
