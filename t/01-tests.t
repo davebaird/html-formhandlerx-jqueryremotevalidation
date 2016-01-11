@@ -13,38 +13,38 @@ plan tests => 5;
 
 my $test_spec = {
 'rules' => {
-   'password' => {
+   'TestForm.password' => {
        'remote' => {
-         'url' => '/ajax/formvalidator/TestForm/password',
+         'url' => '/ajax/formvalidator/TestForm/TestForm.password',
          'data' => 'TestForm_data_collector',
          'type' => 'POST'
        }
      },
-   'password2' => {
+   'TestForm.password2' => {
         'remote' => {
           'type' => 'POST',
           'data' => 'TestForm_data_collector',
-          'url' => '/ajax/formvalidator/TestForm/password2'
+          'url' => '/ajax/formvalidator/TestForm/TestForm.password2'
         }
       },
-   'lname' => {
+   'TestForm.lname' => {
     'remote' => {
       'type' => 'POST',
       'data' => 'TestForm_data_collector',
-      'url' => '/ajax/formvalidator/TestForm/lname'
+      'url' => '/ajax/formvalidator/TestForm/TestForm.lname'
     }
   },
-   'fname' => {
+   'TestForm.fname' => {
     'remote' => {
       'data' => 'TestForm_data_collector',
-      'url' => '/ajax/formvalidator/TestForm/fname',
+      'url' => '/ajax/formvalidator/TestForm/TestForm.fname',
       'type' => 'POST'
     }
   },
-   'email' => {
+   'TestForm.email' => {
     'remote' => {
       'type' => 'POST',
-      'url' => '/ajax/formvalidator/TestForm/email',
+      'url' => '/ajax/formvalidator/TestForm/TestForm.email',
       'data' => 'TestForm_data_collector'
     }
   }

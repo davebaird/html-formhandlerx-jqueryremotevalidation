@@ -10,11 +10,11 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 =head1 VERSION
 
-Version 0.121
+Version 0.2
 
 =cut
 
-our $VERSION = '0.121';
+our $VERSION = '0.2';
 
 
 =head1 SYNOPSIS
@@ -50,8 +50,7 @@ has validation_endpoint => (is => 'rw', isa => 'Str', default => '/ajax/formvali
 
 has jquery_validator_link => (is => 'rw', isa => 'Str', default => 'http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js');
 
-has skip_remote_validation_fields => (is => 'rw', isa => 'ArrayRef', default => sub { [ qw(submit) ] });
-has skip_remote_validation_types  => (is => 'rw', isa => 'ArrayRef', default => sub { [ qw(Hidden noCAPTCHA Display JSON JavaScript) ] });
+has skip_remote_validation_types  => (is => 'rw', isa => 'ArrayRef', default => sub { [ qw(Submit Hidden noCAPTCHA Display JSON JavaScript) ] });
 
 has skip_all_remote_validation => (is => 'rw', isa => 'Bool', default => 0);
 
@@ -75,9 +74,16 @@ method _js_code_for_validation_scripts () {
 method _data_for_validation_spec () {
     my $js_profile = { rules => {}, messages => {} };
 
-    foreach my $field (@{$self->fields}) {
-        next if $self->_skip_remote_validation($field);       # don't build rules for these fields
-        $js_profile->{rules}->{$field->id}->{remote} = $self->_build_remote_rule($field);
+    foreach my $f (@{$self->fields}) {
+        next if $self->_skip_remote_validation($f);       # don't build rules for these fields
+        if ($f->isa('HTML::FormHandler::Field::Repeatable')) { # also 'Compound' as well but I don't have one of these lying around just yet
+            foreach my $subf (sort {$a->name cmp $b->name} map {$_->fields} $f->fields) {
+                $js_profile->{rules}->{$subf->id}->{remote} = $self->_build_remote_rule($subf);
+            }
+        }
+        else {
+            $js_profile->{rules}->{$f->id}->{remote} = $self->_build_remote_rule($f);
+        }
     }
 
     return $js_profile;
@@ -85,7 +91,7 @@ method _data_for_validation_spec () {
 
 method _build_remote_rule ($field) {
     my $remote_rule = {
-        url => sprintf("%s/%s/%s", $self->validation_endpoint, $self->name, $field->name),
+        url => sprintf("%s/%s/%s", $self->validation_endpoint, $self->name, $field->id),
         type => 'POST',
         data => $self->name . "_data_collector",
         };
@@ -94,28 +100,41 @@ method _build_remote_rule ($field) {
 }
 
 method _data_collector_script () {
-    my $script = join(",\n", 
-                    map { sprintf "    \"%s.%s\": function () { return \$(\"#%s\\\\.%s\").val() }", $self->name, $_->name, $self->name, $_->name }
-                    grep { ! $self->_skip_data_collection($_) }
-                    sort {$a->name cmp $b->name} # the sort is there to keep output consistent for test scripts
-                    $self->fields
-                    );
+    my @func;
+    foreach my $f (sort {$a->name cmp $b->name} $self->fields) { # the sort is for consistent output in tests
+        next if $self->_skip_data_collection($f);
+        if ($f->isa('HTML::FormHandler::Field::Repeatable')) { # also 'Compound' as well but I don't have one of these lying around just yet
+            foreach my $subf (sort {$a->name cmp $b->name} map {$_->fields} $f->fields) {
+                push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }", 
+                    $subf->id, _escape_dots($subf->id);
+            }
+        }
+        else {
+            push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }", 
+                $f->id, _escape_dots($f->id);
+        }
+    }
 
     my $form_name = $self->name;
-    return "  var ${form_name}_data_collector = {\n" . $script . "\n  };\n";
+    return "  var ${form_name}_data_collector = {\n" . join(",\n", @func) . "\n  };\n";
+}
+
+sub _escape_dots {
+    my $str = shift;
+    $str =~ s/\./\\\\./g;
+    return $str;
 }
 
 method _skip_remote_validation ($field) {
     return 1 if $self->skip_all_remote_validation;
-    my %skip_field = map {$_=>1} @{$self->skip_remote_validation_fields};
     my %skip_type  = map {$_=>1} @{$self->skip_remote_validation_types};
-    return 1 if $skip_field{$field->name};
+    return 1 if $field->get_tag('no_remote_validate');
     return 1 if $skip_type{$field->type};
     return 0;
 }
 
 method _skip_data_collection ($field) {
-    return 0 if $field->type eq 'Hidden';
+    return 0 if $field->type eq 'Hidden'; # collect, but don't validate, hidden fields
     return $self->_skip_remote_validation($field);
 }
 
@@ -273,7 +292,7 @@ and success messages in the C<jqr_validate_options> attribute:
 
     has '+jqr_validate_options' => (default => sub {$jqr_validate_options});
 
-=head2 Class attributes
+=head2 Class (form) attributes
 
 =head3 C<validation_endpoint>
 
@@ -310,17 +329,22 @@ Default: C<[ qw(Hidden noCAPTCHA Display JSON JavaScript) ]>
 
 A list of field types that should not be included in the validation calls.
 
-=head3 C<skip_remote_validation_fields>
-
-Default: C<[ qw(submit) ]>
-
-A list of field names that should not be included in the validation calls.
-
 =head3 C<skip_all_remote_validation>
 
 Boolean, default 0.
 
 A flag to turn off remote validation altogether, perhaps useful during form development.
+
+
+=head2 Field attributes
+
+=head3 Tag C<no_remote_validate> [C<Bool>]
+
+Default: not set
+
+Set this tag to a true value on fields that should not be remotely validated:
+
+    has_field 'foo' => (tags => {no_remote_validate => 1}, ... );
 
 
 =head1 See also

@@ -8,6 +8,8 @@ extends 'HTML::FormHandler';
 with 'HTML::FormHandlerX::JQueryRemoteValidator'; 
 
 #has '+skip_all_remote_validation' => (default => 1);
+
+has '+html_prefix' => (default => 1);
  
 has '+name' => ( default => 'TestForm' );
 
@@ -58,6 +60,7 @@ has_field 'password2' => (
 
 has_field 'submit' => (
     widget => 'Submit', 
+    type => 'Submit',
     label => '', 
     element_class =>['btn', 'btn-primary'], 
     default => 'Sign up',

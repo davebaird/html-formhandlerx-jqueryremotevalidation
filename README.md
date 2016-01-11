@@ -4,7 +4,7 @@ HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asy
 
 # VERSION
 
-Version 0.121
+Version 0.2
 
 # SYNOPSIS
 
@@ -146,7 +146,7 @@ and success messages in the `jqr_validate_options` attribute:
 
     has '+jqr_validate_options' => (default => sub {$jqr_validate_options});
 
-## Class attributes
+## Class (form) attributes
 
 ### `validation_endpoint`
 
@@ -183,17 +183,21 @@ Default: `[ qw(Hidden noCAPTCHA Display JSON JavaScript) ]`
 
 A list of field types that should not be included in the validation calls.
 
-### `skip_remote_validation_fields`
-
-Default: `[ qw(submit) ]`
-
-A list of field names that should not be included in the validation calls.
-
 ### `skip_all_remote_validation`
 
 Boolean, default 0.
 
 A flag to turn off remote validation altogether, perhaps useful during form development.
+
+## Field attributes
+
+### Tag `no_remote_validate` \[`Bool`\]
+
+Default: not set
+
+Set this tag to a true value on fields that should not be remotely validated:
+
+    has_field 'foo' => (tags => {no_remote_validate => 1}, ... );
 
 # See also
 
