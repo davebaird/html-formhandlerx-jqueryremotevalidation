@@ -2,6 +2,7 @@
 use 5.006;
 use strict;
 use warnings;
+use Test::Lib;
 use Test::More;
 use Test::LongString;
 
@@ -52,7 +53,7 @@ my $test_spec = {
 'messages' => {}
 };
 
-my $test_js1 = 
+my $test_js1 =
 q[  var TestForm_data_collector = {
     "TestForm.email": function () { return $("#TestForm\\\\.email").val() },
     "TestForm.fname": function () { return $("#TestForm\\\\.fname").val() },
@@ -62,7 +63,7 @@ q[  var TestForm_data_collector = {
     "TestForm.password2": function () { return $("#TestForm\\\\.password2").val() }
   };];
 
-my $test_js2 = 
+my $test_js2 =
 q[  $(document).ready(function() {
     $.getScript("http://ajax.aspnetcdn.com/ajax/jquery.validate/1.14.0/jquery.validate.min.js", function () {
       if (typeof TestForm_validation_spec !== 'undefined') {
