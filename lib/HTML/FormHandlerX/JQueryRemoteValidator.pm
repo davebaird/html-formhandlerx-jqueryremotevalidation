@@ -4,45 +4,6 @@ use HTML::FormHandler::Moose::Role;
 use Method::Signatures::Simple;
 use JSON ();
 
-=head1 NAME
-
-HTML::FormHandlerX::JQueryRemoteValidator - call server-side validation code asynchronously from client-side forms.
-
-=head1 VERSION
-
-Version 0.21
-
-=cut
-
-our $VERSION = '0.21';
-
-
-=head1 SYNOPSIS
-
-    package MyApp::Form::Foo;
-    use HTML::FormHandler::Moose;
-
-    with 'HTML::FormHandlerX::JQueryRemoteValidator';
-
-    ...
-
-    # You need to provide a form validation script at /ajax/formvalidator
-    # In Poet/Mason, something like this in /ajax/formvalidator.mp -
-    
-    route ':form_name/:field_name';
-
-    method handle () {
-        my $form = $.form($.form_name);
-        $form->process(params => $.args, no_update => 1);
-
-        my $err = join ' ', @{$form->field($.field_name)->errors};
-        my $result = $err || 'true';
-
-        $m->print(JSON->new->allow_nonref->encode($result));
-    }
-
-
-=cut
 
 has_field _validation_scripts => (type => 'JavaScript', set_js_code => '_js_code_for_validation_scripts');
 
@@ -105,12 +66,12 @@ method _data_collector_script () {
         next if $self->_skip_data_collection($f);
         if ($f->isa('HTML::FormHandler::Field::Repeatable')) { # also 'Compound' as well but I don't have one of these lying around just yet
             foreach my $subf (sort {$a->name cmp $b->name} map {$_->fields} $f->fields) {
-                push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }", 
+                push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }",
                     $subf->id, _escape_dots($subf->id);
             }
         }
         else {
-            push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }", 
+            push @func, sprintf "    \"%s\": function () { return \$(\"#%s\").val() }",
                 $f->id, _escape_dots($f->id);
         }
     }
@@ -141,11 +102,11 @@ method _skip_data_collection ($field) {
 method _run_validator_script () {
     my $form_name = $self->name;
     my $link = $self->jquery_validator_link;
-    
-    my $opts = join ",\n          ", 
+
+    my $opts = join ",\n          ",
                     map { sprintf "%s: %s", $_, $self->jquery_validator_opts->{$_} }
                     keys %{$self->jquery_validator_opts};
-                    
+
     $opts = "\n$opts," if $opts;
 
     my $script = <<SCRIPT;
@@ -168,6 +129,34 @@ SCRIPT
 # http://jqueryvalidation.org/validate/     - start reading with the summary at the *end* of the page
 has 'jquery_validator_opts' => (is => 'rw', isa => 'HashRef[Str]', required => 0, default => sub {{}});
 
+=head1 SYNOPSIS
+
+    package MyApp::Form::Foo;
+    use HTML::FormHandler::Moose;
+
+    with 'HTML::FormHandlerX::JQueryRemoteValidator';
+
+    ...
+
+    # You need to provide a form validation script at /ajax/formvalidator
+    # In Poet/Mason, something like this in /ajax/formvalidator.mp -
+
+    route ':form_name/:field_name';
+
+    method handle () {
+        my $form = $.form($.form_name);
+        $form->process(params => $.args, no_update => 1);
+
+        my $err = join ' ', @{$form->field($.field_name)->errors};
+        my $result = $err || 'true';
+
+        $m->print(JSON->new->allow_nonref->encode($result));
+    }
+
+
+=cut
+
+
 =head1 CONFIGURATION AND SETUP
 
 The purpose of this package is to build a set of JQuery scripts and inject them
@@ -186,19 +175,19 @@ to customise that behaviour for your own situation. An example is given below.
 
 =item JQuery
 
-Load the JQuery library somewhere on your page. 
+Load the JQuery library somewhere on your page.
 
 =item JQuery validator
 
-See the C<jquery_validator_link> attribute. 
+See the C<jquery_validator_link> attribute.
 
 =item Server-side validation endpoint
 
-See the C<validation_endpoint> attribute. 
+See the C<validation_endpoint> attribute.
 
 =item Some JS fragments to update the form
 
-  
+
 
 =item CSS to prettify it all
 
@@ -209,31 +198,31 @@ See the C<validation_endpoint> attribute.
 =head3 Markup
 
     <form ...>
-    
+
     <div class="form-group form-group-sm">
         <label class="col-xs-3 control-label" for="AddressForm.name"></label>
         <div class="col-xs-6">
-            <input type="text" name="AddressForm.name" id="AddressForm.name" 
+            <input type="text" name="AddressForm.name" id="AddressForm.name"
                 class="form-control" value="" />
         </div>
-        <label for="AddressForm.name" id="AddressForm.name-error" 
+        <label for="AddressForm.name" id="AddressForm.name-error"
             class="has-error control-label col-xs-3">
         </label>
     </div>
-    
+
     <div class="form-group form-group-sm">
         <label class="col-xs-3 control-label" for="AddressForm.address"></label>
         <div class="col-xs-6">
-            <input type="text" name="AddressForm.address" id="AddressForm.address" 
+            <input type="text" name="AddressForm.address" id="AddressForm.address"
                 class="form-control" value="" />
         </div>
-        <label for="AddressForm.address" id="AddressForm.address-error" 
+        <label for="AddressForm.address" id="AddressForm.address-error"
             class="has-error control-label col-xs-3">
         </label>
     </div>
-    
+
     ...
-    
+
     </form>
 
 
@@ -241,7 +230,7 @@ See the C<validation_endpoint> attribute.
 
 Most of the classes on the form come from Twitter Bootstrap 3. In this example,
 JQuery validator targets error messages to the second <label> on each
-form-control. This is the default behaviour but can be changed. 
+form-control. This is the default behaviour but can be changed.
 
 The default setup will display and remove messages as the user progresses
 through the form. JQuery Validator offers lots of options. You can read about
@@ -257,7 +246,7 @@ Some useful additional styling to get started:
       display: inline-block;
       text-indent: -9999px;
     }
-    
+
     label.error {
       font-weight: normal;
       color: red;
@@ -267,8 +256,8 @@ Some useful additional styling to get started:
 
 =head3 JavaScript
 
-You can provide extra JavaScript functions to control the behaviour of the error 
-and success messages in the C<jqr_validate_options> attribute: 
+You can provide extra JavaScript functions to control the behaviour of the error
+and success messages in the C<jqr_validate_options> attribute:
 
     my $jqr_validate_options = {
         highlight => q/function(element, errorClass, validClass) {
@@ -299,13 +288,13 @@ Default: /ajax/formvalidator
 
 The form data will be POSTed to C<[validation_endpoint]/[form_name]/[field_name]>.
 
-Note that *all* fields are submitted, not just the field being validated. 
+Note that *all* fields are submitted, not just the field being validated.
 
-You must write the code to handle this submission. The response should be a JSON 
+You must write the code to handle this submission. The response should be a JSON
 string, either C<true> if the field passed its tests, or a message describing
 the error. The message will be displayed on the form.
 
-The synopsis has an example for Poet/Mason. 
+The synopsis has an example for Poet/Mason.
 
 =head3 C<jquery_validator_link>
 
@@ -318,8 +307,8 @@ server and modify this setting to point to it.
 
 Default: {}
 
-A HashRef, keys being the keys of the C<validate> JQuery validator call documented 
-at L<http://jqueryvalidation.org/validate/>, with values being JavaScript functions 
+A HashRef, keys being the keys of the C<validate> JQuery validator call documented
+at L<http://jqueryvalidation.org/validate/>, with values being JavaScript functions
 etc. as described there.
 
 =head3 C<skip_remote_validation_types>
@@ -360,94 +349,11 @@ Set this tag to a true value on fields that should not be remotely validated:
 
 =cut
 
-=head1 AUTHOR
-
-David R. Baird, C<< <dave at zerofive.co.uk> >>
-
-=head1 CODE REPOSITORY
-
-L<http://github.com/davebaird/html-formhandlerx-jqueryremotevalidator>
-
-Please report any bugs or feature requests there.
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc HTML::FormHandlerX::JQueryRemoteValidator
-
-
-You can also look for information at:
-
-=over 4
-
-=item * MetaCPAN
-
-L<https://metacpan.org/pod/HTML::FormHandlerX::JQueryRemoteValidator>
-
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/HTML-FormHandlerX-JQueryRemoteValidator>
-
-=item * CPAN Ratings
-
-L<http://cpanratings.perl.org/d/HTML-FormHandlerX-JQueryRemoteValidator>
-
-=item * Search CPAN
-
-L<http://search.cpan.org/dist/HTML-FormHandlerX-JQueryRemoteValidator/>
-
-=back
-
 
 =head1 ACKNOWLEDGEMENTS
 
 This started out as a modification of Aaron Trevana's
 HTML::FormHandlerX::Form::JQueryValidator
-
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2016 David R. Baird.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of the the Artistic License (2.0). You may obtain a
-copy of the full license at:
-
-L<http://www.perlfoundation.org/artistic_license_2_0>
-
-Any use, modification, and distribution of the Standard or Modified
-Versions is governed by this Artistic License. By using, modifying or
-distributing the Package, you accept this license. Do not use, modify,
-or distribute the Package, if you do not accept this license.
-
-If your Modified Version has been derived from a Modified Version made
-by someone other than you, you are nevertheless required to ensure that
-your Modified Version complies with the requirements of this license.
-
-This license does not grant you the right to use any trademark, service
-mark, tradename, or logo of the Copyright Holder.
-
-This license includes the non-exclusive, worldwide, free-of-charge
-patent license to make, have made, use, offer to sell, sell, import and
-otherwise transfer the Package with respect to any patent claims
-licensable by the Copyright Holder that are necessarily infringed by the
-Package. If you institute patent litigation (including a cross-claim or
-counterclaim) against any party alleging that the Package constitutes
-direct or contributory patent infringement, then this Artistic License
-to you shall terminate on the date that such litigation is filed.
-
-Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
-AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
-THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
-YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
-CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
-CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
 
 =cut
 
