@@ -15,7 +15,9 @@ my %WriteMakefileArgs = (
   "MIN_PERL_VERSION" => "5.012000",
   "NAME" => "HTML::FormHandlerX::JQueryRemoteValidator",
   "PREREQ_PM" => {
+    "HTML::FormHandler" => "0.01",
     "HTML::FormHandler::Moose::Role" => 0,
+    "HTML::FormHandlerX::Field::JavaScript" => 0,
     "JSON" => 0,
     "Method::Signatures::Simple" => "0.02"
   },
@@ -26,7 +28,7 @@ my %WriteMakefileArgs = (
     "Test::More" => 0,
     "namespace::autoclean" => "0.01"
   },
-  "VERSION" => "0.22",
+  "VERSION" => "0.23",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -36,6 +38,7 @@ my %WriteMakefileArgs = (
 my %FallbackPrereqs = (
   "HTML::FormHandler" => "0.01",
   "HTML::FormHandler::Moose::Role" => 0,
+  "HTML::FormHandlerX::Field::JavaScript" => 0,
   "JSON" => 0,
   "Method::Signatures::Simple" => "0.02",
   "Test::Lib" => "0.001",

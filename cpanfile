@@ -1,4 +1,6 @@
+requires "HTML::FormHandler" => "0.01";
 requires "HTML::FormHandler::Moose::Role" => "0";
+requires "HTML::FormHandlerX::Field::JavaScript" => "0";
 requires "JSON" => "0";
 requires "Method::Signatures::Simple" => "0.02";
 requires "perl" => "v5.12.0";

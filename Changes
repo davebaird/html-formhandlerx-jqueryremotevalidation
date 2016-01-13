@@ -1,5 +1,8 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.23    2016-01-13 23:55
+        Added missing dependency. 
+
 0.22    2016-01-13 11:45
         Converted dist to use Dist::Zilla. Added Test::Lib to testing to try and
         fix failures on cpantesters.
