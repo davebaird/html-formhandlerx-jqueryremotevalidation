@@ -16,6 +16,7 @@ has skip_remote_validation_types  => (is => 'rw', isa => 'ArrayRef', default => 
 has skip_all_remote_validation => (is => 'rw', isa => 'Bool', default => 0);
 
 method _js_code_for_validation_scripts () {
+    return '' if $self->skip_all_remote_validation;
     my $spec_data = $self->_data_for_validation_spec;
     my $spec = JSON->new->utf8
                         ->allow_nonref

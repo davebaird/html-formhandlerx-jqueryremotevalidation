@@ -1,5 +1,8 @@
 Revision history for HTML-FormHandlerX-JQueryRemoteValidator
 
+0.24    2016-01-20 21:00
+        Fixed bug with skip_all_remote_validation
+
 0.23    2016-01-13 23:55
         Added missing dependency. 
 
